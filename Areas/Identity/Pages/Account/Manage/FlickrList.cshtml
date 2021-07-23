@@ -1,0 +1,32 @@
+﻿@page
+@model FlickrModel
+@{
+    ViewData["Title"] = "FlickrList";
+    ViewData["ActivePage"] = ManageNavPages.FlickrList;
+}
+
+<h4>@ViewData["Title"]</h4>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+            <tr>
+                <th>Photo ID</th>
+                <th>Title</th>
+                <th>Image</th>
+            </tr>
+            @foreach (var photo in Model.Input.Photos)
+            {
+            <tr>
+                <td>@photo.PhotoId</td>
+                <td>@photo.Title</td>
+                <td><img src="@photo.SmallUrl" /></td>
+            </tr>
+            }
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

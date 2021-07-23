@@ -1,0 +1,14 @@
+﻿@using FlickrNet;
+@model PhotoCollection
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Flickr Lists</h1>
+    @foreach (var photo in Model)
+    {
+        <p>@photo.PhotoId</p>
+        <p>@photo.Title</p>
+    }
+</div>

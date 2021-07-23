@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlickrNet;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MonashExercise.Models;
 using System;
@@ -32,6 +33,19 @@ namespace MonashExercise.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult FlickrList()
+        {
+            const string apiKey = "a9e27bff3b1f58e1274e643bb8f1834b";
+
+            Flickr flickr = new Flickr(apiKey);
+            string searchTerm = "mountain";
+            var options = new PhotoSearchOptions
+            { Tags = searchTerm, PerPage = 20, Page = 1 };
+            PhotoCollection photos = flickr.PhotosSearch(options);
+
+            return View(photos);
         }
     }
 }
