@@ -6,6 +6,12 @@
 }
 
 <h4>@ViewData["Title"]</h4>
+<form id="flickr-search-tag" method="get">
+    <p>
+        Tag: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
     <div class="col-md-6">

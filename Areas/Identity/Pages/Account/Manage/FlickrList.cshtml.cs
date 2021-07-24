@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FlickrNet;
+using X.PagedList;
+using Microsoft.Extensions.Configuration;
 
 namespace MonashExercise.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +16,17 @@ namespace MonashExercise.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
-        public FlickrModel(
+        private const int FLICKR_PER_PAGE = 20;
+
+        public FlickrModel(IConfiguration configuration,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         public PhotoCollection Photos { get; set; }
@@ -39,22 +45,18 @@ namespace MonashExercise.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(PhotoCollection photos)
         {
-           
-
             Input = new InputModel
             {
                 Photos = photos
             };
         }
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            const string apiKey = "a9e27bff3b1f58e1274e643bb8f1834b";
-
-            Flickr flickr = new Flickr(apiKey);
-            string searchTerm = "mountain";
+        public async Task<IActionResult> OnGetAsync(string searchString = "mountain")
+        {            
+            Flickr flickr = new Flickr(_configuration.GetValue<string>("FlickrApiKey"));
             var options = new PhotoSearchOptions
-            { Tags = searchTerm, PerPage = 20, Page = 1 };
+            { Tags = searchString, PerPage = FLICKR_PER_PAGE, Page = 1 };
+
             PhotoCollection photos = flickr.PhotosSearch(options);
 
             await LoadAsync(photos);
