@@ -12,6 +12,8 @@ Test Login <br/>
 username: test@monash.edu.au <br/>
 password: Admin123!@#
 
+Database + Environment = Azure
+
 <br><hr/>
 <h3>Web API</h3>
 To retrieve recent photos:<br/>
