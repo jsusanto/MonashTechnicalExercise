@@ -51,14 +51,21 @@ namespace MonashExercise.Areas.Identity.Pages.Account.Manage
             };
         }
 
-        public async Task<IActionResult> OnGetAsync(string searchString = "mountain")
+        public async Task<IActionResult> OnGetAsync(string searchString="")
         {            
             Flickr flickr = new Flickr(_configuration.GetValue<string>("FlickrApiKey"));
             var options = new PhotoSearchOptions
             { Tags = searchString, PerPage = FLICKR_PER_PAGE, Page = 1 };
 
-            PhotoCollection photos = flickr.PhotosSearch(options);
-
+            PhotoCollection photos;
+            if (searchString.Length < 1)
+            {
+                photos = flickr.PhotosGetRecent();
+            }
+            else
+            {
+                photos = flickr.PhotosSearch(options);
+            }
             await LoadAsync(photos);
             return Page();
         }
